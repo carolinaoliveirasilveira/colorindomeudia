@@ -2,6 +2,9 @@ package com.colorindomeudia.colorindomeudia.model;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table
 public class Classes {
@@ -12,6 +15,9 @@ public class Classes {
     private String teacher;
     private String session;
     private String description;
+
+    @OneToMany(mappedBy = "classes")
+    private List<Enrollment> enrollments = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -51,6 +57,15 @@ public class Classes {
 
     public void setTeacher(String teacher) {
         this.teacher = teacher;
+
+    }
+
+    public List<Enrollment> getEnrollments() {
+        return enrollments;
+    }
+
+    public void setEnrollments(List<Enrollment> enrollments) {
+        this.enrollments = enrollments;
     }
 }
 

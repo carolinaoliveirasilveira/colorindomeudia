@@ -2,6 +2,9 @@ package com.colorindomeudia.colorindomeudia.model;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity // anotação para informar que essa classe é uma entidade do banco de dados
 @Table(name = "students") // anotação para especificar o nome da tabela no banco de dados
 public class Students {
@@ -14,6 +17,9 @@ public class Students {
     private String parent_name;
     private String address;
     private String contact_number;
+
+    @OneToMany(mappedBy = "students")
+    private List<Enrollment> enrollments = new ArrayList<>();
 
     public String getAddress() {
         return address;
