@@ -12,9 +12,16 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class EnrollmentService {
-    @Autowired(required = true)
+    @Autowired
     EnrollmentRepository enrollmentRepository;
 
     @Autowired
@@ -55,7 +62,6 @@ public class EnrollmentService {
     }
 
 
-    // metodo para converter a entidade de matricula em um DTO de resposta
     private ResponseEnrollementDto toConverteEnrollmentParaResponseEnrollmentDto(Enrollment enrollment) {
         ResponseEnrollementDto responseEnrollementDto = // nova instancia de resposta com os dados da matricula
                 new ResponseEnrollementDto(
@@ -65,6 +71,48 @@ public class EnrollmentService {
 
         return responseEnrollementDto;
     }
+
+    public List<ResponseEnrollementDto> getListEnrollment(){
+        List<Enrollment> listEnrollment = enrollmentRepository.findAll();
+        List<ResponseEnrollementDto> listEnrollmentDto = new ArrayList<>();
+        for (Enrollment enrollment: listEnrollment) {
+            ResponseEnrollementDto dto =
+                    new ResponseEnrollementDto(
+                            enrollment.getId(),
+                            enrollment.getEnrollmentDate(),
+                            enrollment.getStatus());
+                    listEnrollmentDto.add(dto);
+        }
+        return listEnrollmentDto;
+    }
+
+    public ResponseEnrollementDto getEnrollmentById(Long id) {
+        Enrollment enrollment = enrollmentRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Matrícula não encontrada!"));
+        return toConverteEnrollmentParaResponseEnrollmentDto(enrollment);
+    }
+
+    public byte[] exportStudentsToCsv(List<Students> studentsList) throws IOException {
+        StringBuilder csvContent = new StringBuilder();
+        csvContent.append("Id; Nome; Data de Nascimento; Grade; Nome do Responsável; Endereço; Número de Contato\n");
+
+        for (Students student : studentsList) {
+            csvContent.append(student.getId()).append(";")
+                    .append(student.getName()).append(";")
+                    .append(student.getBirthday() != null ? student.getBirthday() : "").append(";")
+                    .append(student.getGrade()).append(";")
+                    .append(student.getParent_name()).append(";")
+                    .append(student.getAddress()).append(";")
+                    .append(student.getContact_number()).append("\n");
+        }
+
+        return csvContent.toString().getBytes(StandardCharsets.UTF_8);
+    }
+
+    public List<Students> getListStudents() {
+        return studentsRepository.findAll();
+    }
+
 
 }
 

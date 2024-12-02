@@ -1,9 +1,11 @@
 package com.colorindomeudia.colorindomeudia.model.dto;
 
+import java.util.Date;
+
 public record ResponseStudentDto(
         Long id,
         String name,
-        String age,
+        Date birthday,
         String grade,
         String parent_name,
         String address,

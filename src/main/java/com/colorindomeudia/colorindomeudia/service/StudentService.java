@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class StudentsService {
+public class StudentService {
     @Autowired(required = true)
     private StudentsRepository studentsRepository;
 
@@ -22,7 +22,6 @@ public class StudentsService {
             throw new RuntimeException("Aluno já cadastrado no banco de dados!");
         }
         Students students = toStudentDto(requestStudentDto);
-
         Students returnStudents = studentsRepository.save(students);
         ResponseStudentDto responseStudentDto = toConverteEstudanteParaResponseStudentDto(returnStudents);
         return responseStudentDto;
@@ -33,7 +32,7 @@ public class StudentsService {
                 new ResponseStudentDto(
                         students.getId(),
                         students.getName(),
-                        students.getAge(),
+                        students.getBirthday(),
                         students.getGrade(),
                         students.getParent_name(),
                         students.getAddress(),
@@ -44,7 +43,7 @@ public class StudentsService {
     private Students toStudentDto(RequestStudentDto requestStudentDto) {
         Students students = new Students();
         students.setName(requestStudentDto.name());
-        students.setAge(requestStudentDto.age());
+        students.setBirthday(requestStudentDto.birthday());
         students.setAddress(requestStudentDto.address());
         students.setGrade(requestStudentDto.grade());
         students.setContact_number(requestStudentDto.contact_number());
@@ -60,7 +59,7 @@ public class StudentsService {
             ResponseStudentDto dto = new ResponseStudentDto(
                     students.getId(),
                     students.getName(),
-                    students.getAge(),
+                    students.getBirthday(),
                     students.getGrade(),
                     students.getParent_name(),
                     students.getAddress(),
@@ -82,12 +81,20 @@ public class StudentsService {
                return new ResponseStudentDto(
                         student.get().getId(),
                         student.get().getName(),
-                        student.get().getAge(),
+                        student.get().getBirthday(),
                         student.get().getGrade(),
                         student.get().getParent_name(),
                         student.get().getAddress(),
                         student.get().getContact_number());
 
+    }
+
+    public void deleteStudent(Long id) {
+        boolean idExist = studentsRepository.existsById(id);
+        if (!idExist) {
+            throw new RuntimeException("Aluno não encontrado.");
+        }
+        studentsRepository.deleteById(id);
     }
 
 }

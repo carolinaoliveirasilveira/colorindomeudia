@@ -1,18 +1,21 @@
 package com.colorindomeudia.colorindomeudia.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity // anotação para informar que essa classe é uma entidade do banco de dados
 @Table(name = "students") // anotação para especificar o nome da tabela no banco de dados
 public class Students {
     @Id // anotação para identificar a chave primaria de uma entidade no banco de dados
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // junto com o id para gerar valores automáticos para chave primária
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    // junto com o id para gerar valores automáticos para chave primária
     private Long id;
     private String name;
-    private String age;
+    private Date birthday;
     private String grade;
     private String parent_name;
     private String address;
@@ -20,6 +23,10 @@ public class Students {
 
     @OneToMany(mappedBy = "students")
     private List<Enrollment> enrollments = new ArrayList<>();
+
+    @OneToMany(mappedBy = "students")
+    @JsonBackReference
+    private List<PreEnrollment> preEnrollments;
 
     public String getAddress() {
         return address;
@@ -29,12 +36,12 @@ public class Students {
         this.address = address;
     }
 
-    public String getAge() {
-        return age;
+    public Date getBirthday() {
+        return birthday;
     }
 
-    public void setAge(String age) {
-        this.age = age;
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
     }
 
     public String getContact_number() {
@@ -44,6 +51,7 @@ public class Students {
     public void setContact_number(String contact_number) {
         this.contact_number = contact_number;
     }
+
 
     public String getGrade() {
         return grade;
@@ -75,5 +83,21 @@ public class Students {
 
     public void setParent_name(String parent_name) {
         this.parent_name = parent_name;
+    }
+
+    public List<Enrollment> getEnrollments() {
+        return enrollments;
+    }
+
+    public void setEnrollments(List<Enrollment> enrollments) {
+        this.enrollments = enrollments;
+    }
+
+    public List<PreEnrollment> getPreEnrollments() {
+        return preEnrollments;
+    }
+
+    public void setPreEnrollments(List<PreEnrollment> preEnrollments) {
+        this.preEnrollments = preEnrollments;
     }
 }

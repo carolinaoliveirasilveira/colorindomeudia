@@ -19,6 +19,9 @@ public class Classes {
     @OneToMany(mappedBy = "classes")
     private List<Enrollment> enrollments = new ArrayList<>();
 
+    @OneToMany(mappedBy = "desiredClass")
+    private List<PreEnrollment> preEnrollments;
+
     public Long getId() {
         return id;
     }
@@ -66,6 +69,14 @@ public class Classes {
 
     public void setEnrollments(List<Enrollment> enrollments) {
         this.enrollments = enrollments;
+    }
+
+    public List<PreEnrollment> getPreEnrollments() {
+        return preEnrollments;
+    }
+
+    public void setPreEnrollments(List<PreEnrollment> preEnrollments) {
+        this.preEnrollments = preEnrollments;
     }
 }
 
