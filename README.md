@@ -1,4 +1,10 @@
-Criei o projeto de escola infantil "Colorindo Meu Dia" utilizando a arquitetura MVC. 
+<p align="center">
+<img loading="lazy" src="http://img.shields.io/static/v1?label=STATUS&message=EM%20DESENVOLVIMENTO&color=GREEN&style=for-the-badge"/>
+</p>
+
+Olá,
+
+Estou criando o projeto de escola infantil "Colorindo Meu Dia" utilizando a arquitetura MVC. 
 
 Com o principal objetivo de oferecer uma plataforma intuitiva e de fácil manutenção, ideal para o gerenciamento de dados dos estudantes, das turmas e dos professores. 
 
